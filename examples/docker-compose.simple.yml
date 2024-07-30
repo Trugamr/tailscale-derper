@@ -1,0 +1,15 @@
+name: tailscale-derper-simple
+
+services:
+  derper:
+    build: .
+    command:
+      - --hostname=${DERPER_HOSTNAME:?}
+    restart: unless-stopped
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+      - 3478:3478/udp
+    volumes:
+      # Save ssl certificates to persist across restarts
+      - ./derper/certs:/root/.cache/tailscale/derper-certs
